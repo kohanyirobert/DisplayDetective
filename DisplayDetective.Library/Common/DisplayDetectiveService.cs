@@ -47,15 +47,24 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
         _deleteCommandFileName = deviceSection["DeleteCommand"];
         _deleteCommandArguments = deviceSection.GetSection("DeleteArguments").Get<string[]>();
 
-        if (_createCommandFileName == null && _deleteCommandFileName == null) {
+        if (_createCommandFileName == null && _deleteCommandFileName == null)
+        {
             throw new InvalidOperationException("CreateCommand and DeleteCommand are both missing");
-        } else if (_createCommandFileName != null && _createCommandFileName.All(char.IsWhiteSpace)) {
+        }
+        else if (_createCommandFileName != null && _createCommandFileName.All(char.IsWhiteSpace))
+        {
             throw new InvalidOperationException("CreateCommand is empty");
-        } else if (_deleteCommandFileName != null && _deleteCommandFileName.All(char.IsWhiteSpace)) {
+        }
+        else if (_deleteCommandFileName != null && _deleteCommandFileName.All(char.IsWhiteSpace))
+        {
             throw new InvalidOperationException("DeleteCommand is empty");
-        } else if (_createCommandFileName == null && _createCommandArguments != null) {
+        }
+        else if (_createCommandFileName == null && _createCommandArguments != null)
+        {
             throw new InvalidOperationException("CreateArguments is missing");
-        } else if (_deleteCommandFileName == null && _deleteCommandArguments != null) {
+        }
+        else if (_deleteCommandFileName == null && _deleteCommandArguments != null)
+        {
             throw new InvalidOperationException("DeleteArguments is missing");
         }
     }
