@@ -1,12 +1,13 @@
 {
     "DisplayDetective": {
-        "Watches": {
-            "": {
+        "Watches": [
+            {
+                "DeviceID": "",
                 "DeleteCommand": "test2.exe",
                 "DeleteArguments": [
                     "argZ"
                 ]
             }
-        }
+        ]
     }
 }

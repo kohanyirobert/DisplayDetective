@@ -10,13 +10,12 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
     private readonly ILogger<IDisplayDetectiveService> _logger;
     private readonly IDisplayMonitorService _monitorService;
     private readonly ICommandRunnerService _runnerService;
-    private readonly string _deviceID;
+    private readonly string? _deviceID;
     private readonly string? _createCommandFileName;
     private readonly IEnumerable<string>? _createCommandArguments;
     private readonly string? _deleteCommandFileName;
     private readonly IEnumerable<string>? _deleteCommandArguments;
     private CancellationToken _token;
-
     private Process? _createProcess;
     private Process? _deleteProcess;
 
@@ -36,7 +35,7 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
         else if (watches.Count > 1) throw new InvalidOperationException($"Multiple watches configured");
 
         var deviceSection = watches[0];
-        _deviceID = deviceSection.Key;
+        _deviceID = deviceSection["DeviceID"];
         if (string.IsNullOrWhiteSpace(_deviceID))
         {
             throw new InvalidOperationException($"Device ID is unset or empty ({_deviceID})");

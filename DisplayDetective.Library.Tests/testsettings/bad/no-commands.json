@@ -1,8 +1,9 @@
 {
     "DisplayDetective": {
-        "Watches": {
-            "TestDeviceID": {
+        "Watches": [
+            {
+                "TestDeviceID": {}
             }
-        }
+        ]
     }
 }

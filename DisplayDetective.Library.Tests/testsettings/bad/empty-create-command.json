@@ -1,7 +1,8 @@
 {
     "DisplayDetective": {
-        "Watches": {
-            "TestDeviceID": {
+        "Watches": [
+            {
+                "DeviceID": "TestDeviceID",
                 "CreateCommand": "",
                 "CreateArguments": [
                     "argX",
@@ -12,6 +13,6 @@
                     "argZ"
                 ]
             }
-        }
+        ]
     }
 }

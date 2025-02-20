@@ -1,10 +1,11 @@
 {
     "DisplayDetective": {
-        "Watches": {
-            "TestDeviceID": {
+        "Watches": [
+            {
+                "DeviceID": "TestDeviceID",
                 "CreateCommand": "test1.exe",
                 "DeleteCommand": "test2.exe"
             }
-        }
+        ]
     }
 }
