@@ -16,7 +16,6 @@
     <Content Include="testsettings\**\*.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
-
   <ItemGroup>
     <Using Include="Moq" />
     <Using Include="Xunit" />
