@@ -11,10 +11,10 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
     private readonly IDisplayMonitorService _monitorService;
     private readonly ICommandRunnerService _runnerService;
     private readonly string _deviceID;
-    private readonly string _createCommandFileName;
-    private readonly IEnumerable<string> _createCommandArguments;
-    private readonly string _deleteCommandFileName;
-    private readonly IEnumerable<string> _deleteCommandArguments;
+    private readonly string? _createCommandFileName;
+    private readonly IEnumerable<string>? _createCommandArguments;
+    private readonly string? _deleteCommandFileName;
+    private readonly IEnumerable<string>? _deleteCommandArguments;
     private CancellationToken _token;
     
     private Process? _createProcess;
@@ -30,11 +30,10 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
         _monitorService = monitorService;
         _runnerService = runnerService;
 
-        var appSection = configuration.GetRequiredSection("DisplayDetective");
-        var watchesSection = appSection.GetRequiredSection("Watches");
+        var watchesSection = configuration.GetRequiredSection("DisplayDetective:Watches");
         var watches = watchesSection.GetChildren().ToList();
-        if (watches.Count == 0) throw new InvalidOperationException($"No watches configured in {watchesSection}");
-        else if (watches.Count > 1) throw new InvalidOperationException($"Multiple watches configured in {watchesSection}");
+        if (watches.Count == 0) throw new InvalidOperationException($"No watches configured");
+        else if (watches.Count > 1) throw new InvalidOperationException($"Multiple watches configured");
 
         var deviceSection = watches[0];
         _deviceID = deviceSection.Key;
@@ -43,14 +42,22 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
             throw new InvalidOperationException($"Device ID is unset or empty ({_deviceID})");
         }
 
-        _createCommandFileName = deviceSection["CreateCommand"]
-            ?? throw new InvalidOperationException($"No CreateCommand configured in {watchesSection.Path}");
-        _createCommandArguments = deviceSection.GetRequiredSection("CreateArguments").Get<string[]>()
-            ?? throw new InvalidOperationException($"No CreateArguments configured in {watchesSection.Path}");
-        _deleteCommandFileName = deviceSection["DeleteCommand"]
-            ?? throw new InvalidOperationException($"No CreateCommand configured in {watchesSection.Path}");
-        _deleteCommandArguments = deviceSection.GetRequiredSection("DeleteArguments").Get<string[]>()
-            ?? throw new InvalidOperationException($"No CreateArguments configured in {watchesSection.Path}");
+        _createCommandFileName = deviceSection["CreateCommand"];
+        _createCommandArguments = deviceSection.GetSection("CreateArguments").Get<string[]>();
+        _deleteCommandFileName = deviceSection["DeleteCommand"];
+        _deleteCommandArguments = deviceSection.GetSection("DeleteArguments").Get<string[]>();
+
+        if (_createCommandFileName == null && _deleteCommandFileName == null) {
+            throw new InvalidOperationException("CreateCommand and DeleteCommand are both missing");
+        } else if (_createCommandFileName != null && _createCommandFileName.All(char.IsWhiteSpace)) {
+            throw new InvalidOperationException("CreateCommand is empty");
+        } else if (_deleteCommandFileName != null && _deleteCommandFileName.All(char.IsWhiteSpace)) {
+            throw new InvalidOperationException("DeleteCommand is empty");
+        } else if (_createCommandFileName == null && _createCommandArguments != null) {
+            throw new InvalidOperationException("CreateArguments is missing");
+        } else if (_deleteCommandFileName == null && _deleteCommandArguments != null) {
+            throw new InvalidOperationException("DeleteArguments is missing");
+        }
     }
 
     public async Task RunAsync(CancellationToken token)
@@ -80,11 +87,13 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
 
     private void OnDisplayCreated(object? sender, IDisplay display)
     {
+        if (_token.IsCancellationRequested) return;
         HandleDisplayCreatedOrDeletedAsync(display, true);
     }
 
     private void OnDisplayDeleted(object? sender, IDisplay display)
     {
+        if (_token.IsCancellationRequested) return;
         HandleDisplayCreatedOrDeletedAsync(display, false);
     }
 
@@ -100,7 +109,6 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
             _logger.LogDebug("☝️ Matched monitored device ID ({_deviceID}), running command", _deviceID);
             var emoji = created ? "👟" : "🛑";
             var label = created ? "create" : "delete";
-            var type = created ? "Create" : "Delete";
             var command = created ? _createCommandFileName : _deleteCommandFileName;
             var arguments = created ? _createCommandArguments : _deleteCommandArguments;
             _logger.LogInformation("{emoji} Running {type} command: {cmd}", emoji, label, command);

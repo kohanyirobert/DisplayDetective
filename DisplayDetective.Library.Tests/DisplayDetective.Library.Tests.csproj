@@ -13,8 +13,9 @@
 
   <ItemGroup>
     <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="testsettings.*.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="testsettings\**\*.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
+
 
   <ItemGroup>
     <Using Include="Moq" />

@@ -1,0 +1,16 @@
+{
+    "DisplayDetective": {
+        "Watches": {
+            "TestDeviceID": {
+                "CreateArguments": [
+                    "argX",
+                    "argY"
+                ],
+                "DeleteCommand": "test2.exe",
+                "DeleteArguments": [
+                    "argZ"
+                ]
+            }
+        }
+    }
+}

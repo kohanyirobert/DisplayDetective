@@ -1,0 +1,9 @@
+{
+    "DisplayDetective": {
+        "Watches": {
+            "TestDeviceID": {
+                "CreateCommand": "test1.exe"
+            }
+        }
+    }
+}
