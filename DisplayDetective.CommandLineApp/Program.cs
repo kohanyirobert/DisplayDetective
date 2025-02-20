@@ -5,6 +5,7 @@ using System.CommandLine.Parsing;
 
 using DisplayDetective.Library.Common;
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -43,12 +44,9 @@ var parser = new CommandLineBuilder(rootCmd)
     .UseDefaults()
     .UseHost(Host.CreateDefaultBuilder, builder =>
     {
+        builder.ConfigureAppConfiguration((_, config) => config.AddUserSecrets<Program>());
         builder.ConfigureServices(services =>
         {
-            if (!OperatingSystem.IsWindows())
-            {
-                throw new PlatformNotSupportedException();
-            }
             services.AddTransient((_) => DisplayListServiceFactory.Create());
             services.AddTransient((_) => DisplayMonitorServiceFactory.Create());
             services.AddTransient<ICommandRunnerService, CommandRunnerService>();
