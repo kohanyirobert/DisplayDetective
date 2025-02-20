@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 using DisplayDetective.Library.Common;
 
 using Microsoft.Extensions.Logging;
