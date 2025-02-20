@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DisplayDetective.Library.Tests.Common;
 
-[Trait("Category", "Unit")]
+[Trait("Category", "Acceptance")]
 public class CommandRunnerServiceTests
 {
     private const string SleepExe = "DisplayDetective.TestSleep.exe";
@@ -16,7 +16,7 @@ public class CommandRunnerServiceTests
     {
         var service = new CommandRunnerService(Mock.Of<ILogger<ICommandRunnerService>>());
 
-        using var process = service.Run("cmd.exe", ["/c", "echo", "START"], TestContext.Current.CancellationToken);
+        using var process = service.Run(SleepExe, [], TestContext.Current.CancellationToken);
         Assert.NotNull(process);
         Assert.False(process.HasExited);
 
@@ -31,14 +31,14 @@ public class CommandRunnerServiceTests
     {
         var service = new CommandRunnerService(Mock.Of<ILogger<ICommandRunnerService>>());
 
-        using var process = service.Run("cmd.exe", ["/c", SleepExe, "2"], TestContext.Current.CancellationToken);
+        using var process = service.Run(SleepExe, ["500"], TestContext.Current.CancellationToken);
         Assert.NotNull(process);
         Assert.False(process.HasExited);
 
-        var exited = process.WaitForExit(1000);
+        var exited = process.WaitForExit(250);
         Assert.False(exited);
 
-        exited = process.WaitForExit(1500);
+        exited = process.WaitForExit(500);
         Assert.True(exited);
         Assert.True(process.HasExited);
         Assert.Equal(0, process.ExitCode);
@@ -51,11 +51,11 @@ public class CommandRunnerServiceTests
         var source = new CancellationTokenSource();
         var token = source.Token;
 
-        using var process = service.Run("cmd.exe", ["/c", SleepExe, "3"], token);
+        using var process = service.Run(SleepExe, ["500"], token);
         Assert.NotNull(process);
         Assert.False(process.HasExited);
 
-        var exited = process.WaitForExit(1000);
+        var exited = process.WaitForExit(250);
         Assert.False(exited);
 
         source.Cancel();
