@@ -14,57 +14,6 @@ DisplayDetective is a CLI tool to monitor display devices by their IDs. It execu
 - 🔧 **Open Source** use VS Code and C# extensions
 - 🤖 **AI** utilize AI technologies during development
 
-## Usage
-
-### Running the Application
-
-1. **List Displays:**
-   ```sh
-   dotnet run --project DisplayDetective.CommandLineApp list
-   ```
-
-2. **Monitor a Display:**
-   ```sh
-   dotnet run --project DisplayDetective.CommandLineApp monitor --device-id <DeviceID>
-   ```
-
-### Configuration
-
-The application uses `appsettings.json` for configuration.
-
-Example `appsettings.json`:
-```json
-{
-    "Logging": {
-        "LogLevel": {
-            "Default": "Information",
-            "Microsoft": "Warning",
-            "Microsoft.Hosting.Lifetime": "Warning"
-        },
-        "Console": {
-            "FormatterName": "Simple",
-            "FormatterOptions": {
-                "SingleLine": true,
-                "TimestampFormat": "HH:mm:ss ",
-                "UseUtcTimestamp": false
-            }
-        }
-    },
-    "DisplayDetective": {
-        "Watches": {
-            "<DeviceID>": {
-                "CreateCommand": "path/to/create/command",
-                "CreateArguments": ["arg1", "arg2"],
-                "DeleteCommand": "path/to/delete/command",
-                "DeleteArguments": ["arg1", "arg2"]
-            }       
-        }
-    }
-}
-```
-
-Replace `<DeviceID>` with the actual device ID of the display you want to monitor.
-
 ## Development
 
 ### Prerequisites
@@ -72,16 +21,25 @@ Replace `<DeviceID>` with the actual device ID of the display you want to monito
 - .NET SDK 9.0
 - Visual Studio Code with C# extensions
 
-### Building the Solution
+## Configuration
+
+The application uses [`appsettings.json`](appsettings.json) for configuration, use it as a reference.
+
+Since `appsettings{,.Development}.json` file(s) are checked into VCS during development
+it's best to edit your user secrets file ([see related documentation](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets)).
+
+## Usage
+
+### Running
 
 ```sh
+git clone ... repo
+cd repo
 dotnet build
-```
-
-### Running Tests
-
-```sh
 dotnet test
+cd DisplayDetective.CommandLineApp
+dotnet run -- list
+dotnet run -- monitor
 ```
 
 ## Contributing
