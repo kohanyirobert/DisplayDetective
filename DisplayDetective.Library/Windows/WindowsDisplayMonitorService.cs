@@ -44,5 +44,8 @@ internal sealed class WindowsDisplayMonitorService : IDisplayMonitorService
             var instance = (ManagementBaseObject)e.NewEvent["TargetInstance"];
             OnDisplayDeleted.Invoke(this, Display.Create(instance));
         };
+
+        _creationWatcher.Start();
+        _deletionWatcher.Start();
     }
 }
