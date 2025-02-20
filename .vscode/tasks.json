@@ -8,8 +8,7 @@
                 "kind": "build",
                 "isDefault": true
             },
-            "problemMatcher": [],
-            "label": "dotnet: build"
+            "label": "build"
         }
     ]
 }

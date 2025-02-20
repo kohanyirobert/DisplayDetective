@@ -1,0 +1,18 @@
+{
+    "profiles": {
+        "list": {
+            "commandName": "Project",
+            "commandLineArgs": "list",
+            "environmentVariables": {
+                "DOTNET_ENVIRONMENT": "Development"
+            }
+        },
+        "monitor": {
+            "commandName": "Project",
+            "commandLineArgs": "monitor",
+            "environmentVariables": {
+                "DOTNET_ENVIRONMENT": "Development"
+            }
+        }
+    }
+}
