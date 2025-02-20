@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 namespace DisplayDetective.Library.Tests.Common;
 
 [Trait("Category", "Unit")]
-public class CommandRunnerTests
+public class CommandRunnerServiceTests
 {
     private const string SleepExe = "DisplayDetective.TestSleep.exe";
 
