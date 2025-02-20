@@ -19,7 +19,7 @@ public class DisplayDetectiveServiceTests
         var logger = new Mock<ILogger<DisplayDetectiveService>>();
 
         var configuration = new ConfigurationBuilder()
-            .AddJsonStream(new MemoryStream(Encoding.UTF8.GetBytes(File.ReadAllText("appsettings.Test.json"))))
+            .AddJsonFile($"testsettings.{nameof(DisplayDetectiveServiceTests)}.json")
             .Build();
 
         var monitorMock = new Mock<IDisplayMonitorService>();
