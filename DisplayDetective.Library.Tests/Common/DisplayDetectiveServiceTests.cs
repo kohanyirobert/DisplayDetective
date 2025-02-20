@@ -10,31 +10,26 @@ namespace DisplayDetective.Library.Tests.Common;
 [Trait("Category", "Unit")]
 public class DisplayDetectiveServiceTests
 {
-    const string DeviceID = "TestDeviceID";
-    static readonly IDisplay TestDisplay = Display.Create(DeviceID, "TestName", "TestManufacturer", "TestDescription");
+    private const string DeviceID = "TestDeviceID";
+    private static readonly IDisplay TestDisplay = Display.Create(DeviceID, "TestName", "TestManufacturer", "TestDescription");
+
+    private static readonly IConfiguration Configuration = new ConfigurationBuilder()
+        .AddJsonFile($"testsettings.{nameof(DisplayDetectiveServiceTests)}.json")
+        .Build();
 
     [Fact]
-    public async Task RunAsync_Works_WhenEverythingIsInPlace()
+    public void RunAsync_Works_WhenEverythingIsInPlace()
     {
-        var logger = new Mock<ILogger<DisplayDetectiveService>>();
-
-        var configuration = new ConfigurationBuilder()
-            .AddJsonFile($"testsettings.{nameof(DisplayDetectiveServiceTests)}.json")
-            .Build();
-
         var monitorMock = new Mock<IDisplayMonitorService>();
         var runnerMock = new Mock<ICommandRunnerService>();
 
         var detectiveService = new DisplayDetectiveService(
-            logger.Object,
-            configuration,
+            Mock.Of<ILogger<DisplayDetectiveService>>(),
+            Configuration,
             monitorMock.Object,
             runnerMock.Object);
 
-        var source = new CancellationTokenSource();
-        var token = source.Token;
-
-        var detectiveTask = detectiveService.RunAsync(token);
+        var detectiveTask = detectiveService.RunAsync(TestContext.Current.CancellationToken);
 
         monitorMock.VerifyAdd(m => m.OnDisplayCreated += It.IsAny<EventHandler<IDisplay>>(), Times.Once);
         monitorMock.VerifyAdd(m => m.OnDisplayDeleted += It.IsAny<EventHandler<IDisplay>>(), Times.Once);
@@ -44,10 +39,7 @@ public class DisplayDetectiveServiceTests
         runnerMock.Verify(m => m.Run(
             It.Is<string>(s => !string.IsNullOrWhiteSpace(s)),
             It.Is<string[]>(x => x != null && x.Length > 0),
-            token), Times.Once);
+            TestContext.Current.CancellationToken), Times.Once);
         runnerMock.VerifyNoOtherCalls();
-
-        source.Cancel();
-        await detectiveTask;
     }
 }
