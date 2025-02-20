@@ -16,7 +16,7 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
     private readonly string? _deleteCommandFileName;
     private readonly IEnumerable<string>? _deleteCommandArguments;
     private CancellationToken _token;
-    
+
     private Process? _createProcess;
     private Process? _deleteProcess;
 
@@ -142,7 +142,17 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
 
     public void Dispose()
     {
-        _createProcess?.Dispose();
-        _deleteProcess?.Dispose();
+        _monitorService.OnDisplayCreated -= OnDisplayCreated;
+        _monitorService.OnDisplayDeleted -= OnDisplayDeleted;
+        if (_createProcess != null && !_createProcess.HasExited)
+        {
+            _createProcess.Dispose();
+            _createProcess = null;
+        }
+        if (_deleteProcess != null && !_deleteProcess.HasExited)
+        {
+            _deleteProcess.Dispose();
+            _deleteProcess = null;
+        }
     }
 }
