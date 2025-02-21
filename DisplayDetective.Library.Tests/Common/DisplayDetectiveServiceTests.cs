@@ -1,3 +1,5 @@
+using System.Reflection.Emit;
+
 using DisplayDetective.Library.Common;
 
 using Microsoft.Extensions.Configuration;
@@ -8,7 +10,8 @@ namespace DisplayDetective.Library.Tests.Common;
 [Trait("Category", "Unit")]
 public class DisplayDetectiveServiceTests
 {
-    private static IEnumerable<TheoryDataRow<string>> GetConfigFiles(string subDirectory) {
+    private static IEnumerable<TheoryDataRow<string>> GetConfigFiles(string subDirectory)
+    {
         var directory = Path.Combine("testsettings", subDirectory);
         return Directory.GetFiles(directory, "*.json").Select(f => new TheoryDataRow<string>(f));
     }
@@ -16,12 +19,24 @@ public class DisplayDetectiveServiceTests
     public static IEnumerable<TheoryDataRow<string>> GetGoodConfigFiles() => GetConfigFiles("good");
     public static IEnumerable<TheoryDataRow<string>> GetBadConfigFiles() => GetConfigFiles("bad");
 
+    private static IConfiguration GetGoodConfig(string fileName) => new ConfigurationBuilder()
+        .AddJsonFile(Path.Combine("testsettings", "good", fileName + ".json"))
+        .Build();
+
+    private static IConfiguration GoodConfiguration => GetGoodConfig("both-commands-with-args");
+
+    private static void VerifyLog<T>(Mock<ILogger<T>> loggerMock, LogLevel level, Times times) where T : class
+    {
+        loggerMock.Verify(m => m.Log(
+            level,
+            It.IsAny<EventId>(),
+            It.IsAny<It.IsAnyType>(),
+            It.IsAny<Exception>(),
+            It.IsAny<Func<It.IsAnyType, Exception?, string>>()), times);
+    }
+
     private const string DeviceID = "TestDeviceID";
     private static readonly IDisplay TestDisplay = Display.Create(DeviceID, "TestName", "TestManufacturer", "TestDescription");
-
-    private static readonly IConfiguration Configuration = new ConfigurationBuilder()
-        .AddJsonFile(Path.Combine("testsettings", "good", "both-commands-with-args.json"))
-        .Build();
 
     [Fact]
     public void Ctor_InvalidConfig_Fails()
@@ -62,14 +77,15 @@ public class DisplayDetectiveServiceTests
     }
 
     [Fact]
-    public void RunAsync_Works_WhenEverythingIsInPlace()
+    public void RunAsync_Works_BothCommandAndArgs()
     {
+        var loggerMock = new Mock<ILogger<DisplayDetectiveService>>();
         var monitorMock = new Mock<IDisplayMonitorService>();
         var runnerMock = new Mock<ICommandRunnerService>();
 
         var detectiveService = new DisplayDetectiveService(
-            Mock.Of<ILogger<DisplayDetectiveService>>(),
-            Configuration,
+            loggerMock.Object,
+            GoodConfiguration,
             monitorMock.Object,
             runnerMock.Object);
 
@@ -84,17 +100,21 @@ public class DisplayDetectiveServiceTests
         runnerMock.Verify(m => m.Run("test1.exe", new string[] { "argX", "argY" }, TestContext.Current.CancellationToken), Times.Once);
         runnerMock.Verify(m => m.Run("test2.exe", new string[] { "argZ" }, TestContext.Current.CancellationToken), Times.Once);
         runnerMock.VerifyNoOtherCalls();
+
+        VerifyLog(loggerMock, LogLevel.Error, Times.Never());
+        VerifyLog(loggerMock, LogLevel.Warning, Times.Never());
     }
 
     [Fact]
-    public void RunAsync_AfterCancelling_NoMoreEventsFire()
+    public void RunAsync_Works_OnlyCreateCommandWithArgs()
     {
+        var loggerMock = new Mock<ILogger<DisplayDetectiveService>>();
         var monitorMock = new Mock<IDisplayMonitorService>();
         var runnerMock = new Mock<ICommandRunnerService>();
 
         var detectiveService = new DisplayDetectiveService(
-            Mock.Of<ILogger<DisplayDetectiveService>>(),
-            Configuration,
+            loggerMock.Object,
+            GetGoodConfig("only-create-command-with-args"),
             monitorMock.Object,
             runnerMock.Object);
 
@@ -112,5 +132,40 @@ public class DisplayDetectiveServiceTests
         monitorMock.Raise(m => m.OnDisplayDeleted += null, this, TestDisplay);
 
         runnerMock.VerifyNoOtherCalls();
+
+        VerifyLog(loggerMock, LogLevel.Error, Times.Never());
+        VerifyLog(loggerMock, LogLevel.Warning, Times.Never());
+    }
+
+    [Fact]
+    public void RunAsync_AfterCancelling_NoMoreEventsFire()
+    {
+        var loggerMock = new Mock<ILogger<DisplayDetectiveService>>();
+        var monitorMock = new Mock<IDisplayMonitorService>();
+        var runnerMock = new Mock<ICommandRunnerService>();
+
+        var detectiveService = new DisplayDetectiveService(
+            loggerMock.Object,
+            GoodConfiguration,
+            monitorMock.Object,
+            runnerMock.Object);
+
+        var source = new CancellationTokenSource();
+
+        var detectiveTask = detectiveService.RunAsync(source.Token);
+
+        monitorMock.VerifyAdd(m => m.OnDisplayCreated += It.IsAny<EventHandler<IDisplay>>(), Times.Once);
+        monitorMock.VerifyAdd(m => m.OnDisplayDeleted += It.IsAny<EventHandler<IDisplay>>(), Times.Once);
+        monitorMock.VerifyNoOtherCalls();
+
+        source.Cancel();
+
+        monitorMock.Raise(m => m.OnDisplayCreated += null, this, TestDisplay);
+        monitorMock.Raise(m => m.OnDisplayDeleted += null, this, TestDisplay);
+
+        runnerMock.VerifyNoOtherCalls();
+
+        VerifyLog(loggerMock, LogLevel.Error, Times.Never());
+        VerifyLog(loggerMock, LogLevel.Warning, Times.Never());
     }
 }

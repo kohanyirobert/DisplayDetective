@@ -12,9 +12,9 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
     private readonly ICommandRunnerService _runnerService;
     private readonly string? _deviceID;
     private readonly string? _createCommandFileName;
-    private readonly IEnumerable<string>? _createCommandArguments;
+    private readonly IList<string> _createCommandArguments;
     private readonly string? _deleteCommandFileName;
-    private readonly IEnumerable<string>? _deleteCommandArguments;
+    private readonly IList<string> _deleteCommandArguments;
     private CancellationToken _token;
     private Process? _createProcess;
     private Process? _deleteProcess;
@@ -42,9 +42,9 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
         }
 
         _createCommandFileName = deviceSection["CreateCommand"];
-        _createCommandArguments = deviceSection.GetSection("CreateArguments").Get<string[]>();
+        _createCommandArguments = deviceSection.GetSection("CreateArguments").Get<string[]>() ?? [];
         _deleteCommandFileName = deviceSection["DeleteCommand"];
-        _deleteCommandArguments = deviceSection.GetSection("DeleteArguments").Get<string[]>();
+        _deleteCommandArguments = deviceSection.GetSection("DeleteArguments").Get<string[]>() ?? [];
 
         if (_createCommandFileName == null && _deleteCommandFileName == null)
         {
@@ -58,11 +58,11 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
         {
             throw new InvalidOperationException("DeleteCommand is empty");
         }
-        else if (_createCommandFileName == null && _createCommandArguments != null)
+        else if (_createCommandFileName == null && _createCommandArguments.Count > 0)
         {
             throw new InvalidOperationException("CreateArguments is missing");
         }
-        else if (_deleteCommandFileName == null && _deleteCommandArguments != null)
+        else if (_deleteCommandFileName == null && _deleteCommandArguments.Count > 0)
         {
             throw new InvalidOperationException("DeleteArguments is missing");
         }
@@ -123,9 +123,21 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
             _logger.LogInformation("{emoji} Running {type} command: {cmd}", emoji, label, command);
             try
             {
-                var process = _runnerService.Run(command, arguments, _token);
-                if (created) _createProcess = process;
-                else _deleteProcess = process;
+                if (string.IsNullOrEmpty(command))
+                {
+                    _logger.LogInformation(
+                        "ℹ️ Empty {label} command, doing nothing (arguments were {arguments})",
+                        label,
+                        arguments.Count == 0
+                            ? "none"
+                            : string.Join(' ', arguments));
+                }
+                else
+                {
+                    var process = _runnerService.Run(command, arguments, _token);
+                    if (created) _createProcess = process;
+                    else _deleteProcess = process;
+                }
             }
             catch (Exception ex)
             {
