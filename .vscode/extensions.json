@@ -5,5 +5,8 @@
         "ms-dotnettools.vscodeintellicode-csharp",
         "ms-dotnettools.vscode-dotnet-runtime",
         "giannibonicolini.vscode-user-secret-management",
+        "editorconfig.editorconfig",
+        "github.vscode-github-actions",
+        "redhat.vscode-yaml",
     ]
 }
