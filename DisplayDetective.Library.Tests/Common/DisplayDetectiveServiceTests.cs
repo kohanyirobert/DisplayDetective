@@ -118,19 +118,15 @@ public class DisplayDetectiveServiceTests
             monitorMock.Object,
             runnerMock.Object);
 
-        var source = new CancellationTokenSource();
-
-        var detectiveTask = detectiveService.RunAsync(source.Token);
+        var detectiveTask = detectiveService.RunAsync(TestContext.Current.CancellationToken);
 
         monitorMock.VerifyAdd(m => m.OnDisplayCreated += It.IsAny<EventHandler<IDisplay>>(), Times.Once);
         monitorMock.VerifyAdd(m => m.OnDisplayDeleted += It.IsAny<EventHandler<IDisplay>>(), Times.Once);
         monitorMock.VerifyNoOtherCalls();
-
-        source.Cancel();
-
         monitorMock.Raise(m => m.OnDisplayCreated += null, this, TestDisplay);
         monitorMock.Raise(m => m.OnDisplayDeleted += null, this, TestDisplay);
 
+        runnerMock.Verify(m => m.Run("test1.exe", new string[] {"argX", "argY"}, TestContext.Current.CancellationToken), Times.Once);
         runnerMock.VerifyNoOtherCalls();
 
         VerifyLog(loggerMock, LogLevel.Error, Times.Never());
