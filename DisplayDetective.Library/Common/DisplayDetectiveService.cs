@@ -78,11 +78,12 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
         {
             if (_token.IsCancellationRequested)
             {
-                _logger.LogDebug("⌛ Keeping service alive until cancellation: iteration {i}", i);
+                _logger.LogDebug("🛑 Cancellation requested at iteration {i}", i);
                 break;
             }
             try
             {
+                _logger.LogDebug("⌛ Keeping service alive until cancellation, currently at iteration {i}", i);
                 await Task.Delay(1000, _token);
             }
             catch (TaskCanceledException ex)
