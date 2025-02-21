@@ -1,5 +1,3 @@
-using System.Text;
-
 using DisplayDetective.Library.Common;
 
 using Microsoft.Extensions.Configuration;
