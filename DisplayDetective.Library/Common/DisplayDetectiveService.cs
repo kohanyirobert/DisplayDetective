@@ -119,9 +119,7 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
             var emoji = created ? "👟" : "🛑";
             var label = created ? "create" : "delete";
             var command = created ? _createCommandFileName : _deleteCommandFileName;
-            Debug.Assert(!string.IsNullOrEmpty(command), "Command cannot be null or empty here due to constructor validation");
             var arguments = created ? _createCommandArguments : _deleteCommandArguments;
-            Debug.Assert(arguments != null, "Command cannot be null here due to constructor validation");
             _logger.LogInformation("{emoji} Running {type} command: {cmd}", emoji, label, command);
             try
             {
