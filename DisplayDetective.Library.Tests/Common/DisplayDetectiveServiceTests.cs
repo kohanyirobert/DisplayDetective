@@ -126,7 +126,7 @@ public class DisplayDetectiveServiceTests
         monitorMock.Raise(m => m.OnDisplayCreated += null, this, TestDisplay);
         monitorMock.Raise(m => m.OnDisplayDeleted += null, this, TestDisplay);
 
-        runnerMock.Verify(m => m.Run("test1.exe", new string[] {"argX", "argY"}, TestContext.Current.CancellationToken), Times.Once);
+        runnerMock.Verify(m => m.Run("test1.exe", new string[] { "argX", "argY" }, TestContext.Current.CancellationToken), Times.Once);
         runnerMock.VerifyNoOtherCalls();
 
         VerifyLog(loggerMock, LogLevel.Error, Times.Never());
