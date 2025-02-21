@@ -44,7 +44,14 @@ var parser = new CommandLineBuilder(rootCmd)
     .UseDefaults()
     .UseHost(Host.CreateDefaultBuilder, builder =>
     {
-        builder.ConfigureAppConfiguration((_, config) => config.AddUserSecrets<Program>());
+        builder.ConfigureAppConfiguration((host, config) =>
+        {
+            var env = host.HostingEnvironment;
+            if (env.IsDevelopment())
+            {
+                config.AddUserSecrets<Program>();
+            }
+        });
         builder.ConfigureServices(services =>
         {
             services.AddTransient((_) => DisplayListServiceFactory.Create());
