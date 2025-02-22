@@ -64,4 +64,4 @@ This project is licensed under the MIT License.
 
 ### 📝 Notes
 
-- When using GitHub rulesets and (required) status checks one must enable the [*Do not require status checks on creation*](https://docs.github.com/en/enterprise-cloud@latest/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets#require-status-checks-to-pass-before-merging) option, because otherwise branches can't even be created (since status checks in this case would run *after* a branch created)
+- I don't fully understand what the [*Do not require status checks on creation*](https://docs.github.com/en/enterprise-cloud@latest/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets#require-status-checks-to-pass-before-merging) option mean
