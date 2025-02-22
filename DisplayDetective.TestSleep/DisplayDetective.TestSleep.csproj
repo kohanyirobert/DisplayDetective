@@ -11,4 +11,5 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <Import Project="..\DisplayDetective.Common.targets" />
 </Project>
