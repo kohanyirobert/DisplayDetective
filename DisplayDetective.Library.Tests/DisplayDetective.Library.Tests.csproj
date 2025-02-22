@@ -41,4 +41,5 @@
     </PackageReference>
   </ItemGroup>
 
+  <Import Project="..\DisplayDetective.Common.targets" />
 </Project>
