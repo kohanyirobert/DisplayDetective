@@ -20,12 +20,14 @@ DisplayDetective is a CLI tool to monitor display devices by their IDs. It execu
 
 - 🛠️ .NET SDK 9.0
 - 🖥️ Visual Studio Code with C# extensions
+- 📦 npm
 
 ### 🔨 Tools
 
 - [Husky.Net](https://alirezanet.github.io/Husky.Net/)
 - [EasyBuild](https://github.com/easybuild-org/)
     - [CommitLinter](https://github.com/easybuild-org/EasyBuild.CommitLinter)
+    - [gitmoji](https://gitmoji.dev/) via [devmoji](https://github.com/folke/devmoji)
 
 ## ⚙️ Configuration
 
