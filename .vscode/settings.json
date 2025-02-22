@@ -1,0 +1,15 @@
+{
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "yaml.format.enable": true,
+    "yaml.completion": true,
+    "yaml.format.bracketSpacing": true,
+    "yaml.suggest.parentSkeletonSelectedFirst": false,
+    "yaml.format.singleQuote": true,
+    "yaml.hover": true,
+    "yaml.keyOrdering": false,
+    "yaml.validate": true,
+    "files.associations": {
+        "**/.github/workflows/*.yml": "yaml",
+        "**/.github/workflows/*.yaml": "yaml",
+    },
+}
