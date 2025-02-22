@@ -22,7 +22,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # use GITHUB_TOKEN because of use pr-comments
         with:
-          message: true
+          message: false # temporarily disabled since emojis don't pass the regex test
           branch: true
           author-name: true
           author-email: true
