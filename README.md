@@ -22,12 +22,16 @@ DisplayDetective is a CLI tool to monitor display devices by their IDs. It execu
 - 🖥️ Visual Studio Code with C# extensions
 - 📦 npm
 
-### 🔨 Tools
+### 🔨 Tools  & 🧠 Concepts
 
 - [Husky.Net](https://alirezanet.github.io/Husky.Net/)
 - [EasyBuild](https://github.com/easybuild-org/)
-    - [CommitLinter](https://github.com/easybuild-org/EasyBuild.CommitLinter)
-    - [gitmoji](https://gitmoji.dev/) via [devmoji](https://github.com/folke/devmoji)
+- [Conventional Commits](https://www.conventionalcommits.org/)
+- [Conventional Branch](https://conventional-branch.github.io/)
+- [CommitLinter](https://github.com/easybuild-org/EasyBuild.CommitLinter)
+- [gitmoji](https://gitmoji.dev/) via [devmoji](https://github.com/folke/devmoji)
+- [commit-check](https://github.com/commit-check/commit-check) and [its GitHub Action counterpart](https://github.com/commit-check/commit-check-action)
+- GitHub [rulesets](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/about-rulesets) and [status checks](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/about-status-checks)
 
 ## ⚙️ Configuration
 
