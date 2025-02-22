@@ -20,7 +20,7 @@ DisplayDetective is a CLI tool to monitor display devices by their IDs. It execu
 
 - 🛠️ .NET SDK 9.0
 - 🖥️ Visual Studio Code with C# extensions
-- 📦 npm
+- 📦 npm/npx
 
 ### 🔨 Tools  & 🧠 Concepts
 
