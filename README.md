@@ -24,6 +24,8 @@ DisplayDetective is a CLI tool to monitor display devices by their IDs. It execu
 ### 🔨 Tools
 
 - [Husky.Net](https://alirezanet.github.io/Husky.Net/)
+- [EasyBuild](https://github.com/easybuild-org/)
+    - [CommitLinter](https://github.com/easybuild-org/EasyBuild.CommitLinter)
 
 ## ⚙️ Configuration
 
