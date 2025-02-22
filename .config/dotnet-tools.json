@@ -8,6 +8,13 @@
         "husky"
       ],
       "rollForward": false
+    },
+    "easybuild.commitlinter": {
+      "version": "2.0.0",
+      "commands": [
+        "commit-linter"
+      ],
+      "rollForward": false
     }
   }
 }
