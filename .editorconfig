@@ -1,10 +1,10 @@
 root = true
+charset = utf-8
 
 # All files
 [*]
 end_of_line = lf
 indent_style = space
-charset = utf-8
 
 # Xml files
 [*.xml]
