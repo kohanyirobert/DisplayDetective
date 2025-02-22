@@ -64,4 +64,8 @@ Licensed under the MIT License.
 
 ### 📝 Notes
 
-- I don't fully understand what the [*Do not require status checks on creation*](https://docs.github.com/en/enterprise-cloud@latest/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets#require-status-checks-to-pass-before-merging) option mean
+- I think I understood how GitHub rulesets and status checks work (and also the
+  [*Do not require status checks on creation*](https://docs.github.com/en/enterprise-cloud@latest/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets#require-status-checks-to-pass-before-merging) option).
+  Essentially the required status checks should be set on a protected branch, like main (not PR brances).
+  What this results in is that whenever someone pushes a PR branch it'll be allowed.
+  However for the branch (and a related PR) to be merged into the protected branch it'll be required for the statuses to pass.
