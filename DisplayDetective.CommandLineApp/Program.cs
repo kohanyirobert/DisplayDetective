@@ -38,7 +38,7 @@ monitorCmd.SetHandler(async context =>
 var rootCmd = new RootCommand();
 rootCmd.AddCommand(listCmd);
 rootCmd.AddCommand(monitorCmd);
-rootCmd.Handler = listCmd.Handler;
+rootCmd.Handler = monitorCmd.Handler;
 
 var parser = new CommandLineBuilder(rootCmd)
     .UseDefaults()
