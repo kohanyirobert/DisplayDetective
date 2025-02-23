@@ -9,7 +9,7 @@ checks:
     suggest: please check your commit message whether matches above regex
 
   - check: branch
-    regex: ^(bugfix|feature|release|hotfix|task|chore)\/.+|(master)|(main)|(HEAD)|(PR-.+)
+    regex: ^(bugfix|feature|release|hotfix|task|chore|ci)\/.+|(master)|(main)|(HEAD)|(PR-.+)
     error: "Branches must begin with these types: bugfix/ feature/ release/ hotfix/ task/ chore/"
     suggest: run command `git checkout -b type/branch_name`
 
