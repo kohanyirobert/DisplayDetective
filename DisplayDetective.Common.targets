@@ -3,4 +3,9 @@
     <Exec Command="dotnet tool restore" StandardOutputImportance="Low" StandardErrorImportance="High" />
     <Exec Command="dotnet husky install" StandardOutputImportance="Low" StandardErrorImportance="High" WorkingDirectory=".." />
   </Target>
+
+  <Target Name="CleanBinObj" AfterTargets="Clean">
+    <Message Importance="high" Text="Deleting bin/ and obj/ directories" />
+    <RemoveDir Directories="obj;bin" />
+  </Target>
 </Project>

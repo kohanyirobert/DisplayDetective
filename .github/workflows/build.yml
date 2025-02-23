@@ -12,6 +12,8 @@ env:
 jobs:
   build:
     runs-on: windows-latest
+    env:
+      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,7 +22,7 @@ jobs:
         with:
           dotnet-version: 9.x
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore --locked-mode
       - name: Check format
         run: dotnet format --no-restore --verify-no-changes
       - name: Build

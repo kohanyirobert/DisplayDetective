@@ -16,6 +16,9 @@
     <Nullable>enable</Nullable>
     <WarningsAsErrors>nullable</WarningsAsErrors>
     <UserSecretsId>4d7ed82e-c102-4858-8c55-b4f0103d8bcc</UserSecretsId>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <PrunePackageReference>true</PrunePackageReference>
+    <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
   </PropertyGroup>
 
   <ItemGroup>

@@ -13,6 +13,9 @@
     <IsTestProject>true</IsTestProject>
     <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
     <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <PrunePackageReference>true</PrunePackageReference>
+    <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
   </PropertyGroup>
 
   <ItemGroup>
