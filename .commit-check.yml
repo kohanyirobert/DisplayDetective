@@ -1,6 +1,6 @@
 checks:
   - check: message
-    regex: '^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\([\w\-\.]+\))?(!)?: ([\u2600-\u26FF\u2700-\u27BF\U0001F000-\U0001F02F\U0001F0A0-\U0001F0FF\U0001F100-\U0001F1FF\U0001F300-\U0001F5FF\U0001F600-\U0001F64F\U0001F680-\U0001F6FF\U0001F900-\U0001F9FF]\uFE0F? )?([\w ])+([\s\S]*)|(Merge).*|(fixup!.*)'
+    regex: '^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test){1}(\([\w\-\.]+\))?(!)?: (([\S]+ )+)?([\w ])+([\s\S]*)|(Merge).*|(fixup!.*)'
     error: "The commit message should be structured as follows:\n\n
       <type>[optional scope]: <description>\n
       [optional body]\n
@@ -9,7 +9,7 @@ checks:
     suggest: please check your commit message whether matches above regex
 
   - check: branch
-    regex: ^(bugfix|feature|release|hotfix|task|chore|ci)\/.+|(master)|(main)|(HEAD)|(PR-.+)
+    regex: ^(bugfix|feature|release|hotfix|task|chore)\/.+|(master)|(main)|(HEAD)|(PR-.+)
     error: "Branches must begin with these types: bugfix/ feature/ release/ hotfix/ task/ chore/"
     suggest: run command `git checkout -b type/branch_name`
 
