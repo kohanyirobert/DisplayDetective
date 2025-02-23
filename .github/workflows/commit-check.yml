@@ -1,7 +1,7 @@
 name: Commit Check
 
 on:
-  create:
+  push:
   pull_request:
     branches: [main]
 
