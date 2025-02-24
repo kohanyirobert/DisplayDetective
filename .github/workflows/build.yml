@@ -34,10 +34,10 @@ jobs:
         id: test
         run: dotnet test --no-build --logger "trx;LogFileName=TestResults.trx" --collect "XPlat Code Coverage"
         continue-on-error: true
-      - name: Find TestResults.trx
+      - name: Find .trx
         id: trx
         run: path=(ls -Recurse -Filter *.trx | select -First 1).FullName >> $env:GITHUB_OUTPUT
-      - name: Find coverage.cobertura.xml
+      - name: Find coverage*.xml
         id: coverage
         run: path=(ls -Recurse -Filter coverage*.xml | select -First 1).FullName >> $env:GITHUB_OUTPUT
       - name: Test report
