@@ -53,8 +53,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           comment-title: Test results
-          results-path: ${{ $env:TRX_PATH }}
-          coverage-path: ${{ $env:COVERAGE_PATH }}
+          results-path: ${{ env.TRX_PATH }}
+          coverage-path: ${{ env.COVERAGE_PATH }}
           coverage-threshold: 80
       - name: Fail if any step has failed
         if: ${{ failure() }}
