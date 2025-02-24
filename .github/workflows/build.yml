@@ -31,12 +31,18 @@ jobs:
       - name: Build
         run: dotnet build --no-restore
       - name: Test
+        id: test
         run: dotnet test --no-build --logger trx --collect "XPlat Code Coverage"
+        continue-on-error: true
       - name: Test report
-        uses: bibipkins/dotnet-test-reporter@v1.4.1
+        if: ${{ !cancelled() }}
+        uses: bibipkins/dotnet-test-reporter@v1.5.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           comment-title: Test results
           results-path: ./**/TestResults/*.trx
           coverage-path: ./**/TestResults/coverage*.xml
           coverage-threshold: 80
+      - name: Fail if any step has failed
+        if: ${{ failure() }}
+        run: exit 1
