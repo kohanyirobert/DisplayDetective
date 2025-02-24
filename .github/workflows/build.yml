@@ -42,7 +42,7 @@ jobs:
       - name: Find coverage*.xml
         id: coverage
         run: |
-          $path = ls -Recurse -Filter coverage*.xml | select -First 1).FullName
+          $path = (ls -Recurse -Filter coverage*.xml | select -First 1).FullName
           "path=$path" >> $env:GITHUB_OUTPUT
       - name: Test report
         if: ${{ !cancelled() }}
