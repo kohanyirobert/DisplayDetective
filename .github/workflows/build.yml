@@ -36,12 +36,10 @@ jobs:
         continue-on-error: true
       - name: Find TestResults.trx
         id: trx
-        run: |
-          {path}=(ls -Recurse -Filter *.trx | select -First 1).FullName >> $env:GITHUB_OUTPUT
+        run: path=(ls -Recurse -Filter *.trx | select -First 1).FullName >> $env:GITHUB_OUTPUT
       - name: Find coverage.cobertura.xml
         id: coverage
-        run: |
-          {path}=(ls -Recurse -Filter coverage*.xml | select -First 1).FullName >> $env:GITHUB_OUTPUT
+        run: path=(ls -Recurse -Filter coverage*.xml | select -First 1).FullName >> $env:GITHUB_OUTPUT
       - name: Test report
         if: ${{ !cancelled() }}
         uses: bibipkins/dotnet-test-reporter@v1.5.0
