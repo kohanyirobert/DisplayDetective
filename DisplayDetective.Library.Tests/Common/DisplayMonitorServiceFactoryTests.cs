@@ -1,3 +1,5 @@
+using System.Runtime.Versioning;
+
 using DisplayDetective.Library.Common;
 using DisplayDetective.Library.Windows;
 
@@ -6,18 +8,23 @@ namespace DisplayDetective.Library.Tests.Windows;
 [Trait("Category", "Unit")]
 public class DisplayMonitorServiceFactoryTests
 {
+    [SupportedOSPlatform("windows")]
     [Fact]
-    public void Create_ReturnsServiceOnWindows_OtherwiseThrows()
+    public void Create_OnWindows_Works()
     {
-        if (OperatingSystem.IsWindows())
-        {
-            var service = DisplayMonitorServiceFactory.Create();
-            Assert.NotNull(service);
-            Assert.IsType<WindowsDisplayMonitorService>(service);
-        }
-        else
-        {
-            Assert.Throws<PlatformNotSupportedException>(() => DisplayMonitorServiceFactory.Create());
-        }
+        bool isWindows = true;
+        var factory = new DisplayMonitorServiceFactory(isWindows);
+        var service = factory.Create();
+        Assert.NotNull(service);
+        Assert.IsType<WindowsDisplayMonitorService>(service);
+    }
+
+    [UnsupportedOSPlatform("windows")]
+    [Fact]
+    public void Create_NotOnWindows_DoesNotWork()
+    {
+        bool isWindows = false;
+        var factory = new DisplayMonitorServiceFactory(isWindows);
+        Assert.Throws<PlatformNotSupportedException>(() => factory.Create());
     }
 }

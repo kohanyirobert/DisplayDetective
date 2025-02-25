@@ -1,12 +1,22 @@
+using System.Runtime.Versioning;
+
 using DisplayDetective.Library.Windows;
 
 namespace DisplayDetective.Library.Common;
 
-public static class DisplayListServiceFactory
+public sealed class DisplayListServiceFactory
 {
-    public static IDisplayListService Create()
+    [SupportedOSPlatformGuard("windows")]
+    private readonly bool _isWindows;
+
+    public DisplayListServiceFactory(bool isWindows)
     {
-        if (OperatingSystem.IsWindows())
+        _isWindows = isWindows;
+    }
+
+    public IDisplayListService Create()
+    {
+        if (_isWindows)
         {
             return new WindowsDisplayListService();
         }
