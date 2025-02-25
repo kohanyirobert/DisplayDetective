@@ -1,0 +1,12 @@
+{
+    "DisplayDetective": {
+        "Watches": [
+            {
+                "DeviceID": "TestDeviceID1"
+            },
+            {
+                "DeviceID": "TestDeviceID2"
+            }
+        ]
+    }
+}

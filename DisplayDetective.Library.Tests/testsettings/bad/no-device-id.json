@@ -1,14 +1,16 @@
 {
     "DisplayDetective": {
-        "Watches": [{
-            "CreateCommand": "test1.exe",
-            "CreateArguments": [
-                "argX",
-                "argY"
-            ],
-            "DeleteArguments": [
-                "argZ"
-            ]
-        }]
+        "Watches": [
+            {
+                "CreateCommand": "test1.exe",
+                "CreateArguments": [
+                    "argX",
+                    "argY"
+                ],
+                "DeleteArguments": [
+                    "argZ"
+                ]
+            }
+        ]
     }
 }
