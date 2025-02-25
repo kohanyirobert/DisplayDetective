@@ -91,14 +91,14 @@ public class DisplayDetectiveServiceTests
 
         var detectiveTask = detectiveService.RunAsync(TestContext.Current.CancellationToken);
 
-        monitorMock.VerifyAdd(m => m.OnDisplayCreated += It.IsAny<EventHandler<IDisplay>>(), Times.Once);
-        monitorMock.VerifyAdd(m => m.OnDisplayDeleted += It.IsAny<EventHandler<IDisplay>>(), Times.Once);
+        monitorMock.VerifyAdd(m => m.OnDisplayCreated += It.IsAny<EventHandler<IDisplay>>(), Times.Once());
+        monitorMock.VerifyAdd(m => m.OnDisplayDeleted += It.IsAny<EventHandler<IDisplay>>(), Times.Once());
         monitorMock.VerifyNoOtherCalls();
         monitorMock.Raise(m => m.OnDisplayCreated += null, this, TestDisplay);
         monitorMock.Raise(m => m.OnDisplayDeleted += null, this, TestDisplay);
 
-        runnerMock.Verify(m => m.Run("test1.exe", new string[] { "argX", "argY" }, TestContext.Current.CancellationToken), Times.Once);
-        runnerMock.Verify(m => m.Run("test2.exe", new string[] { "argZ" }, TestContext.Current.CancellationToken), Times.Once);
+        runnerMock.Verify(m => m.Run("test1.exe", new string[] { "argX", "argY" }, TestContext.Current.CancellationToken), Times.Once());
+        runnerMock.Verify(m => m.Run("test2.exe", new string[] { "argZ" }, TestContext.Current.CancellationToken), Times.Once());
         runnerMock.VerifyNoOtherCalls();
 
         VerifyLog(loggerMock, LogLevel.Error, Times.Never());
@@ -120,13 +120,13 @@ public class DisplayDetectiveServiceTests
 
         var detectiveTask = detectiveService.RunAsync(TestContext.Current.CancellationToken);
 
-        monitorMock.VerifyAdd(m => m.OnDisplayCreated += It.IsAny<EventHandler<IDisplay>>(), Times.Once);
-        monitorMock.VerifyAdd(m => m.OnDisplayDeleted += It.IsAny<EventHandler<IDisplay>>(), Times.Once);
+        monitorMock.VerifyAdd(m => m.OnDisplayCreated += It.IsAny<EventHandler<IDisplay>>(), Times.Once());
+        monitorMock.VerifyAdd(m => m.OnDisplayDeleted += It.IsAny<EventHandler<IDisplay>>(), Times.Once());
         monitorMock.VerifyNoOtherCalls();
         monitorMock.Raise(m => m.OnDisplayCreated += null, this, TestDisplay);
         monitorMock.Raise(m => m.OnDisplayDeleted += null, this, TestDisplay);
 
-        runnerMock.Verify(m => m.Run("test1.exe", new string[] { "argX", "argY" }, TestContext.Current.CancellationToken), Times.Once);
+        runnerMock.Verify(m => m.Run("test1.exe", new string[] { "argX", "argY" }, TestContext.Current.CancellationToken), Times.Once());
         runnerMock.VerifyNoOtherCalls();
 
         VerifyLog(loggerMock, LogLevel.Error, Times.Never());
@@ -150,8 +150,8 @@ public class DisplayDetectiveServiceTests
 
         var detectiveTask = detectiveService.RunAsync(source.Token);
 
-        monitorMock.VerifyAdd(m => m.OnDisplayCreated += It.IsAny<EventHandler<IDisplay>>(), Times.Once);
-        monitorMock.VerifyAdd(m => m.OnDisplayDeleted += It.IsAny<EventHandler<IDisplay>>(), Times.Once);
+        monitorMock.VerifyAdd(m => m.OnDisplayCreated += It.IsAny<EventHandler<IDisplay>>(), Times.Once());
+        monitorMock.VerifyAdd(m => m.OnDisplayDeleted += It.IsAny<EventHandler<IDisplay>>(), Times.Once());
         monitorMock.VerifyNoOtherCalls();
 
         source.Cancel();

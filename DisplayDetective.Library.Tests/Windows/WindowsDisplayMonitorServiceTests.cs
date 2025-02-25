@@ -17,6 +17,6 @@ public class WindowsDisplayMonitorServiceTests
         service.OnDisplayCreated += handlerMock.Object;
         service.OnDisplayDeleted += handlerMock.Object;
 
-        handlerMock.Verify(m => m(It.IsAny<object>(), It.IsAny<IDisplay>()), Times.Never);
+        handlerMock.Verify(m => m(It.IsAny<object>(), It.IsAny<IDisplay>()), Times.Never());
     }
 }
