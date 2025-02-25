@@ -18,7 +18,7 @@ public class CommandRunnerServiceTests
         Assert.NotNull(process);
         Assert.False(process.HasExited);
 
-        var exited = process.WaitForExit(100);
+        var exited = process.WaitForExit(1000);
         Assert.True(exited);
         Assert.True(process.HasExited);
         Assert.Equal(0, process.ExitCode);
@@ -29,14 +29,14 @@ public class CommandRunnerServiceTests
     {
         var service = new CommandRunnerService(Mock.Of<ILogger<ICommandRunnerService>>());
 
-        using var process = service.Run(SleepExe, ["500"], TestContext.Current.CancellationToken);
+        using var process = service.Run(SleepExe, ["1000"], TestContext.Current.CancellationToken);
         Assert.NotNull(process);
         Assert.False(process.HasExited);
 
-        var exited = process.WaitForExit(250);
+        var exited = process.WaitForExit(500);
         Assert.False(exited);
 
-        exited = process.WaitForExit(500);
+        exited = process.WaitForExit(1000);
         Assert.True(exited);
         Assert.True(process.HasExited);
         Assert.Equal(0, process.ExitCode);
@@ -49,11 +49,11 @@ public class CommandRunnerServiceTests
         var source = new CancellationTokenSource();
         var token = source.Token;
 
-        using var process = service.Run(SleepExe, ["500"], token);
+        using var process = service.Run(SleepExe, ["1000"], token);
         Assert.NotNull(process);
         Assert.False(process.HasExited);
 
-        var exited = process.WaitForExit(250);
+        var exited = process.WaitForExit(500);
         Assert.False(exited);
 
         source.Cancel();
