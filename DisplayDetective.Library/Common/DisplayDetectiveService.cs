@@ -18,6 +18,7 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
     private CancellationToken _token;
     private Process? _createProcess;
     private Process? _deleteProcess;
+    private bool _disposed;
 
     public DisplayDetectiveService(
         ILogger<IDisplayDetectiveService> logger,
@@ -159,6 +160,11 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
 
     protected virtual void Dispose(bool disposing)
     {
+        if (_disposed)
+        {
+            return;
+        }
+
         if (disposing)
         {
             _monitorService.OnDisplayCreated -= OnDisplayCreated;
@@ -174,5 +180,7 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
                 _deleteProcess = null;
             }
         }
+
+        _disposed = true;
     }
 }
