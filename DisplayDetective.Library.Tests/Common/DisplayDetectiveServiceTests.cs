@@ -13,7 +13,7 @@ public class DisplayDetectiveServiceTests
 {
     private static IEnumerable<TheoryDataRow<string>> GetConfigFiles(string subDirectory)
     {
-        var directory = Path.Combine("testsettings", subDirectory);
+        var directory = Path.Combine("TestSettings", subDirectory);
         return Directory.GetFiles(directory, "*.json").Select(f => new TheoryDataRow<string>(f));
     }
 
@@ -21,7 +21,7 @@ public class DisplayDetectiveServiceTests
     public static IEnumerable<TheoryDataRow<string>> GetBadConfigFiles() => GetConfigFiles("bad");
 
     private static IConfiguration GetGoodConfig(string fileName) => new ConfigurationBuilder()
-        .AddJsonFile(Path.Combine("testsettings", "good", fileName + ".json"))
+        .AddJsonFile(Path.Combine("TestSettings", "good", fileName + ".json"))
         .Build();
 
     private static IConfiguration GoodConfiguration => GetGoodConfig("both-commands-with-args");
@@ -45,7 +45,7 @@ public class DisplayDetectiveServiceTests
         Assert.Throws<InvalidDataException>(() => new DisplayDetectiveService(
             Mock.Of<ILogger<DisplayDetectiveService>>(),
             new ConfigurationBuilder()
-                .AddJsonFile(Path.Combine("testsettings", "invalid.json"))
+                .AddJsonFile(Path.Combine("TestSettings", "invalid.json"))
                 .Build(),
             Mock.Of<IDisplayMonitorService>(),
             Mock.Of<ICommandRunnerService>()));

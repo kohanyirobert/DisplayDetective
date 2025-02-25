@@ -31,4 +31,32 @@ jobs:
       - name: Build
         run: dotnet build --no-restore
       - name: Test
-        run: dotnet test --no-build --verbosity normal
+        id: test
+        run: dotnet test --no-build --logger "trx;LogFileName=TestResults.trx" --collect "XPlat Code Coverage"
+        continue-on-error: true
+      - name: Find .trx
+        id: trx
+        run: |
+          $path = (ls -Recurse -Filter *.trx | select -First 1).FullName
+          "path=$path" >> $env:GITHUB_OUTPUT
+      - name: Find coverage*.xml
+        id: coverage
+        run: |
+          $path = (ls -Recurse -Filter coverage*.xml | select -First 1).FullName
+          "path=$path" >> $env:GITHUB_OUTPUT
+      - name: Test report
+        if: ${{ !cancelled() }}
+        uses: bibipkins/dotnet-test-reporter@v1.5.0
+        env:
+          TRX_PATH: ${{ steps.trx.outputs.path }}
+          COVERAGE_PATH: ${{ steps.coverage.outputs.path }}
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          comment-title: Test results
+          results-path: ${{ env.TRX_PATH }}
+          coverage-type: cobertura
+          coverage-path: ${{ env.COVERAGE_PATH }}
+          coverage-threshold: 80
+      - name: Fail if any step has failed
+        if: ${{ failure() }}
+        run: exit 1

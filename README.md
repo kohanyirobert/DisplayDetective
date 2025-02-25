@@ -52,6 +52,7 @@ dotnet test
 cd DisplayDetective.CommandLineApp
 dotnet run -- list
 dotnet run -- monitor
+dotnet msbuild /t:clean
 ```
 
 ## 🤝 Contributing
