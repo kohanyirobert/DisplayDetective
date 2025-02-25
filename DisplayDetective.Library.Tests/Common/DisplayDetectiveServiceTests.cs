@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Reflection.Emit;
 
 using DisplayDetective.Library.Common;
@@ -163,5 +164,37 @@ public class DisplayDetectiveServiceTests
 
         VerifyLog(loggerMock, LogLevel.Error, Times.Never());
         VerifyLog(loggerMock, LogLevel.Warning, Times.Never());
+    }
+
+    [Fact]
+    public void Dispose_Should_Unsubscribe()
+    {
+        var loggerMock = new Mock<ILogger<DisplayDetectiveService>>();
+        var monitorMock = new Mock<IDisplayMonitorService>();
+        var runnerMock = new Mock<ICommandRunnerService>();
+
+        runnerMock.SetupSequence(m => m.Run(
+            It.IsAny<string>(),
+            It.IsAny<IList<string>>(),
+            TestContext.Current.CancellationToken))
+            .Returns(Mock.Of<Process>())
+            .Returns(Mock.Of<Process>());
+
+        var detectiveService = new DisplayDetectiveService(
+            loggerMock.Object,
+            GoodConfiguration,
+            monitorMock.Object,
+            runnerMock.Object);
+
+        var detectiveTask = detectiveService.RunAsync(TestContext.Current.CancellationToken);
+
+        monitorMock.VerifyAdd(m => m.OnDisplayCreated += It.IsAny<EventHandler<IDisplay>>(), Times.Once());
+        monitorMock.VerifyAdd(m => m.OnDisplayDeleted += It.IsAny<EventHandler<IDisplay>>(), Times.Once());
+
+        detectiveService.Dispose();
+
+        monitorMock.VerifyRemove(m => m.OnDisplayCreated -= It.IsAny<EventHandler<IDisplay>>(), Times.Once());
+        monitorMock.VerifyRemove(m => m.OnDisplayDeleted -= It.IsAny<EventHandler<IDisplay>>(), Times.Once());
+        monitorMock.VerifyNoOtherCalls();
     }
 }

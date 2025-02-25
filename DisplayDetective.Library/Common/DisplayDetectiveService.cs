@@ -153,17 +153,26 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
 
     public void Dispose()
     {
-        _monitorService.OnDisplayCreated -= OnDisplayCreated;
-        _monitorService.OnDisplayDeleted -= OnDisplayDeleted;
-        if (_createProcess != null && !_createProcess.HasExited)
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
         {
-            _createProcess.Dispose();
-            _createProcess = null;
-        }
-        if (_deleteProcess != null && !_deleteProcess.HasExited)
-        {
-            _deleteProcess.Dispose();
-            _deleteProcess = null;
+            _monitorService.OnDisplayCreated -= OnDisplayCreated;
+            _monitorService.OnDisplayDeleted -= OnDisplayDeleted;
+            if (_createProcess != null && !_createProcess.HasExited)
+            {
+                _createProcess.Dispose();
+                _createProcess = null;
+            }
+            if (_deleteProcess != null && !_deleteProcess.HasExited)
+            {
+                _deleteProcess.Dispose();
+                _deleteProcess = null;
+            }
         }
     }
 }
