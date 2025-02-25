@@ -29,7 +29,8 @@ public class DisplayDetectiveService : IDisplayDetectiveService, IDisposable
         _monitorService = monitorService;
         _runnerService = runnerService;
 
-        var watchesSection = configuration.GetRequiredSection("DisplayDetective:Watches");
+        var appSection = configuration.GetRequiredSection("DisplayDetective");
+        var watchesSection = appSection.GetSection("Watches");
         var watches = watchesSection.GetChildren().ToList();
         if (watches.Count == 0) throw new InvalidOperationException($"No watches configured");
         else if (watches.Count > 1) throw new InvalidOperationException($"Multiple watches configured");
