@@ -54,8 +54,16 @@ var parser = new CommandLineBuilder(rootCmd)
         });
         builder.ConfigureServices(services =>
         {
-            services.AddTransient((_) => DisplayListServiceFactory.Create());
-            services.AddTransient((_) => DisplayMonitorServiceFactory.Create());
+            services.AddTransient((_) =>
+            {
+                var factory = new DisplayListServiceFactory(OperatingSystem.IsWindows());
+                return factory.Create();
+            });
+            services.AddTransient((_) =>
+            {
+                var factory = new DisplayMonitorServiceFactory(OperatingSystem.IsWindows());
+                return factory.Create();
+            });
             services.AddTransient<ICommandRunnerService, CommandRunnerService>();
             services.AddTransient<IDisplayDetectiveService, DisplayDetectiveService>();
         });
