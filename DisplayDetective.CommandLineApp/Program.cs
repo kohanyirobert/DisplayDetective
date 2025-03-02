@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.EventLog;
 
 var listCmd = new Command("list");
 listCmd.SetHandler(static (context) =>
@@ -52,8 +53,12 @@ var parser = new CommandLineBuilder(rootCmd)
                 config.AddUserSecrets<Program>();
             }
         });
-        builder.ConfigureServices(services =>
+        builder.ConfigureServices((host, services) =>
         {
+            if (OperatingSystem.IsWindows())
+            {
+                services.Configure<EventLogSettings>(host.Configuration.GetSection("Logging:EventLog"));
+            }
             services.AddTransient((_) =>
             {
                 var factory = new DisplayListServiceFactory(OperatingSystem.IsWindows());

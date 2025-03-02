@@ -55,6 +55,16 @@ dotnet run -- monitor
 dotnet msbuild /t:clean
 ```
 
+### 🪵 Logging
+
+To see logs in Windows Event Viewer create a new log and source for the app using this command via PowerShell:
+
+```pwsh
+New-EventLog -LogName DisplayDetective -Source CommandLineApp
+```
+
+Then create a custom log view by filtering for DisplayDetective.
+
 ## 🤝 Contributing
 
 Contributions are welcome! Feel free to open issues or submit pull requests.
