@@ -2,6 +2,8 @@ using System.Runtime.Versioning;
 
 using DisplayDetective.Library.Windows;
 
+using Microsoft.Extensions.Logging;
+
 namespace DisplayDetective.Library.Tests.Windows;
 
 [Trait("Category", "Acceptance")]
@@ -11,16 +13,13 @@ public class WindowsDisplayListServiceTests
     [Fact]
     public void GetDisplays_ReturnsNonEmptyList()
     {
-        var service = new WindowsDisplayListService();
-        var displays = service.GetDisplays();
+        var loggerMock = new Mock<ILogger<WindowsDisplayListService>>();
+        var service = new WindowsDisplayListService(loggerMock.Object);
+        service.ListDisplays();
 
-        Assert.NotNull(displays);
-        Assert.NotEmpty(displays);
-
-        var display = displays.First();
-        Assert.NotEmpty(display.DeviceID);
-        Assert.NotEmpty(display.Name);
-        Assert.NotEmpty(display.Manufacturer);
-        Assert.NotEmpty(display.Description);
+        loggerMock.VerifyLogMatch(LogLevel.Information, Times.Once(), @"(?i).+scanning");
+        loggerMock.VerifyLogMatch(LogLevel.Information, Times.Once(), @"(?i).+found \d+ display");
+        loggerMock.VerifyLogMatch(LogLevel.Information, Times.Once(), @"(?i).+display 1");
+        loggerMock.VerifyLog(LogLevel.Error, Times.Never());
     }
 }

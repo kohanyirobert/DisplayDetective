@@ -6,7 +6,7 @@ using DisplayDetective.Library.Common;
 namespace DisplayDetective.Library.Windows;
 
 [SupportedOSPlatform("windows")]
-internal sealed class WindowsDisplayMonitorService : IDisplayMonitorService
+public sealed class WindowsDisplayMonitorService : IDisplayMonitorService
 {
     public event EventHandler<IDisplay> OnDisplayCreated = delegate { };
 

@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using System.Reflection.Emit;
 
 using DisplayDetective.Library.Common;
 
@@ -25,16 +24,6 @@ public class DisplayDetectiveServiceTests
         .Build();
 
     private static IConfiguration GoodConfiguration => GetGoodConfig("both-commands-with-args");
-
-    private static void VerifyLog<T>(Mock<ILogger<T>> loggerMock, LogLevel level, Times times) where T : class
-    {
-        loggerMock.Verify(m => m.Log(
-            level,
-            It.IsAny<EventId>(),
-            It.IsAny<It.IsAnyType>(),
-            It.IsAny<Exception>(),
-            It.IsAny<Func<It.IsAnyType, Exception?, string>>()), times);
-    }
 
     private const string DeviceID = "TestDeviceID";
     private static readonly IDisplay TestDisplay = Display.Create(DeviceID, "TestName", "TestManufacturer", "TestDescription");
@@ -102,8 +91,8 @@ public class DisplayDetectiveServiceTests
         runnerMock.Verify(m => m.Run("test2.exe", new string[] { "argZ" }, TestContext.Current.CancellationToken), Times.Once());
         runnerMock.VerifyNoOtherCalls();
 
-        VerifyLog(loggerMock, LogLevel.Error, Times.Never());
-        VerifyLog(loggerMock, LogLevel.Warning, Times.Never());
+        loggerMock.VerifyLog(LogLevel.Error, Times.Never());
+        loggerMock.VerifyLog(LogLevel.Warning, Times.Never());
     }
 
     [Fact]
@@ -130,8 +119,8 @@ public class DisplayDetectiveServiceTests
         runnerMock.Verify(m => m.Run("test1.exe", new string[] { "argX", "argY" }, TestContext.Current.CancellationToken), Times.Once());
         runnerMock.VerifyNoOtherCalls();
 
-        VerifyLog(loggerMock, LogLevel.Error, Times.Never());
-        VerifyLog(loggerMock, LogLevel.Warning, Times.Never());
+        loggerMock.VerifyLog(LogLevel.Error, Times.Never());
+        loggerMock.VerifyLog(LogLevel.Warning, Times.Never());
     }
 
     [Fact]
@@ -162,8 +151,8 @@ public class DisplayDetectiveServiceTests
 
         runnerMock.VerifyNoOtherCalls();
 
-        VerifyLog(loggerMock, LogLevel.Error, Times.Never());
-        VerifyLog(loggerMock, LogLevel.Warning, Times.Never());
+        loggerMock.VerifyLog(LogLevel.Error, Times.Never());
+        loggerMock.VerifyLog(LogLevel.Warning, Times.Never());
     }
 
     [Fact]

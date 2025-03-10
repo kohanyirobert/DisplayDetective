@@ -17,18 +17,11 @@ listCmd.SetHandler(static (context) =>
     var services = context.GetHost().Services;
     var logger = services.GetRequiredService<ILogger<Program>>();
     var service = services.GetRequiredService<IDisplayListService>();
-    logger.LogInformation("🔍 Scanning displays");
-    var displays = service.GetDisplays();
-    logger.LogInformation("✨ Found {count} display(s)", displays.Count);
-    for (int i = 0; i < displays.Count; i++)
-    {
-        var display = displays[i];
-        logger.LogInformation("\n📺 Display {i}\n{display}", i + 1, display.ToMultilineString());
-    }
+    service.ListDisplays();
 });
 
 var monitorCmd = new Command("monitor");
-monitorCmd.SetHandler(async context =>
+monitorCmd.SetHandler(static async context =>
 {
     var token = context.GetCancellationToken();
     var services = context.GetHost().Services;
@@ -59,9 +52,9 @@ var parser = new CommandLineBuilder(rootCmd)
             {
                 services.Configure<EventLogSettings>(host.Configuration.GetSection("Logging:EventLog"));
             }
-            services.AddTransient((_) =>
+            services.AddTransient((provider) =>
             {
-                var factory = new DisplayListServiceFactory(OperatingSystem.IsWindows());
+                var factory = new DisplayListServiceFactory(provider, OperatingSystem.IsWindows());
                 return factory.Create();
             });
             services.AddTransient((_) =>
