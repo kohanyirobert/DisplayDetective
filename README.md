@@ -61,6 +61,7 @@ To see logs in Windows Event Viewer create a new log and source for the app usin
 
 ```pwsh
 New-EventLog -LogName DisplayDetective -Source CommandLineApp
+New-EventLog -LogName DisplayDetective -Source WindowsServiceApp
 ```
 
 Then create a custom log view by filtering for DisplayDetective.
