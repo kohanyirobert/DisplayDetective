@@ -80,3 +80,4 @@ Licensed under the MIT License.
   Essentially the required status checks should be set on a protected branch, like main (not PR brances).
   What this results in is that whenever someone pushes a PR branch it'll be allowed.
   However for the branch (and a related PR) to be merged into the protected branch it'll be required for the statuses to pass.
+- Run [scripts/utf8lf.ps1](scripts/utf8lf.ps1) to make all files UTF-8 (without BOM) and having LF newline characters.
