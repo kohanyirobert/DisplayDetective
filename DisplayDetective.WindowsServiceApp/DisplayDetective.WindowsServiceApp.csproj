@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
     <Version>1.0.0-alpha.2</Version>
@@ -10,14 +10,15 @@
     <PublishReadyToRun>true</PublishReadyToRun>
     <SelfContained>true</SelfContained>
     <PublishTrimmed>false</PublishTrimmed>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <WarningsAsErrors>nullable</WarningsAsErrors>
-    <UserSecretsId>4d7ed82e-c102-4858-8c55-b4f0103d8bcc</UserSecretsId>
+    <UserSecretsId>f2d7526f-de7d-4244-bf76-4098c5603a75</UserSecretsId>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <PrunePackageReference>true</PrunePackageReference>
     <DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,8 +32,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DisplayDetective.Library\DisplayDetective.Library.csproj" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.2" />
-    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
-    <PackageReference Include="System.CommandLine.Hosting" Version="0.4.0-alpha.22272.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.2" />
   </ItemGroup>
 
   <Import Project="..\DisplayDetective.Common.targets" />
