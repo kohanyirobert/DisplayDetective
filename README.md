@@ -2,7 +2,8 @@
 
 ## 📃 Overview
 
-DisplayDetective is a CLI tool to monitor display devices by their IDs. It executes specified commands on display connection or disconnection.
+DisplayDetective is a tool to monitor display devices by their IDs. It executes specified commands on display connection or disconnection.
+There's a CLI and a Windows service variant.
 
 ## 🎯 Project Goals
 
@@ -35,7 +36,7 @@ DisplayDetective is a CLI tool to monitor display devices by their IDs. It execu
 
 ## ⚙️ Configuration
 
-The application uses [`appsettings.json`](appsettings.json) for configuration, use it as a reference.
+The application uses `appsettings.json` for configuration, use it as a reference.
 
 Since `appsettings{,.Development}.json` file(s) are checked into VCS during development
 it's best to edit your user secrets file ([see related documentation](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets)).
@@ -54,6 +55,11 @@ dotnet run -- list
 dotnet run -- monitor
 dotnet msbuild /t:clean
 ```
+
+### 🪴 Example
+
+The CLI can be used to create a scheduled task in Windows to start the executable in monitor mode to run commands in the background.
+The Windows service can be used the same way, although this cannot be used to start commands spawning graphical user interfaces.
 
 ### 🪵 Logging
 
